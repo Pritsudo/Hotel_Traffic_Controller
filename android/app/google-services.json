@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "171864082646",
+    "project_id": "h-t-c-14912",
+    "storage_bucket": "h-t-c-14912.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:171864082646:android:10fed515b1fad8524b2177",
+        "android_client_info": {
+          "package_name": "com.example.hotel_traffic_controller"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "171864082646-sdomoqvoc04c3dine9492nv150q02g2n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzFaqzWxMJ1E8o5SkfxtvKZ0_uHNzP2dw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "171864082646-sdomoqvoc04c3dine9492nv150q02g2n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

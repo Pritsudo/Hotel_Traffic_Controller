@@ -1,14 +1,16 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hotel_traffic_controller/utils/utils.dart';
 import 'package:hotel_traffic_controller/widgets/custom_button.dart';
 import 'package:hotel_traffic_controller/widgets/textFormField.dart';
+import 'package:hotel_traffic_controller/resources/auth_function_class.dart';
 
 class AuthenticationScreen extends StatefulWidget {
   bool isLogin;
- final TextEditingController userNameController = TextEditingController();
- final TextEditingController passwordController = TextEditingController();
- final TextEditingController emailController = TextEditingController();
+  final TextEditingController userNameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
 
   AuthenticationScreen({
     Key? key,
@@ -20,12 +22,58 @@ class AuthenticationScreen extends StatefulWidget {
 }
 
 class _AuthenticationScreenState extends State<AuthenticationScreen> {
+  FocusNode emailFocusNode = FocusNode();
+  FocusNode usernameFocusNode = FocusNode();
+  FocusNode passwordFocusNode = FocusNode();
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    widget.emailController.dispose();
+    widget.passwordController.dispose();
+    widget.userNameController.dispose();
+    emailFocusNode.dispose();
+    usernameFocusNode.dispose();
+    passwordFocusNode.dispose();
+  }
+
+  void loginSignupFun() async {
+    print('Process Started');
+    if (widget.isLogin) {
+      String authStatus = await FirebaseAuthentication().loginUser(
+          widget.emailController.text, widget.passwordController.text);
+      if (authStatus != "success") {
+        Utils().showSnackBar(context: context, content: authStatus);
+      }
+      if (authStatus == "success") {
+        print('SuccessFully executed');
+      }
+    }
+    else{
+      String authStatus = await FirebaseAuthentication().sigUpUser(
+          widget.emailController.text, widget.passwordController.text,widget.userNameController.text);
+      if (authStatus != "success") {
+        Utils().showSnackBar(context: context, content: authStatus);
+      }
+      if (authStatus == "success") {
+        print('SuccessFully executed');
+      }
+    }
+  }
+
+  @override
+  int n = 1;
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    int run = n++;
+    print(run);
     print('width : ${screenSize.width}');
     print('height : ${screenSize.height}');
-    return Form(
+    return GestureDetector(
+      onTap: () {
+        print('Gesture Detector runned');
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
       child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
@@ -62,34 +110,35 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                     height: 20.h,
                   ),
                   TextInputForm(
-                      text: 'UserName',
+                      focusNode: emailFocusNode,
+                      text: 'Email',
                       icon: Icon(
-                        Icons.person,
+                        Icons.email,
                         color: Colors.black,
                         size: 28.h,
                       ),
                       isPassword: false,
-                      controller: widget.userNameController),
-
-                   if (!widget.isLogin)
+                      controller: widget.emailController),
+                  if (!widget.isLogin)
                     SizedBox(
                       height: 20.h,
                     ),
                   if (!widget.isLogin)
                     TextInputForm(
-                        text: 'Email',
+                        focusNode: usernameFocusNode,
+                        text: 'UserName',
                         icon: Icon(
-                          Icons.email,
+                          Icons.person,
                           color: Colors.black,
                           size: 28.h,
                         ),
                         isPassword: false,
-                        controller: widget.emailController),
-
+                        controller: widget.userNameController),
                   SizedBox(
                     height: 20.h,
                   ),
                   TextInputForm(
+                      focusNode: passwordFocusNode,
                       text: 'Password',
                       icon: Icon(
                         Icons.lock,
@@ -98,7 +147,6 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                       ),
                       isPassword: false,
                       controller: widget.passwordController),
-                 
                   SizedBox(height: 20.h),
                   if (widget.isLogin)
                     const Text(
@@ -109,6 +157,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                     height: 15.h,
                   ),
                   CustomButton(
+                      authFunction: loginSignupFun,
                       backgroundColor: Color(0xffF33440),
                       title: widget.isLogin ? 'LOGIN' : 'Signup',
                       fntSize: 22,
@@ -129,6 +178,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               setState(() {
+                                print('Text Span setstate for signup');
                                 widget.isLogin = false;
                               });
                             },
@@ -137,12 +187,12 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
                               fontSize: 18)),
-                    
                     if (!widget.isLogin)
                       TextSpan(
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               setState(() {
+                                print('Text Span For Login');
                                 widget.isLogin = true;
                               });
                             },
