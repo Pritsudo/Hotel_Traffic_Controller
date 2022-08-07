@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CustomButton extends StatelessWidget {
+class CustomButtonWidget extends StatelessWidget {
   final String title;
   final double fntSize;
   final Color color;
   final Color backgroundColor;
-  final Function authFunction;
+  final Function function;
 
-  const CustomButton({
+  const CustomButtonWidget({
     Key? key,
     required this.backgroundColor,
-    required this.authFunction,
+    required this.function,
     required this.title,
     required this.fntSize,
     required this.color,
@@ -20,9 +20,7 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        authFunction();
-      },
+      onTap: () =>function,
       child: Container(
         width: 300.w,
         height: 55.h,

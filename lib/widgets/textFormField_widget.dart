@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class TextInputForm extends StatelessWidget {
+class TextInputFormWidget extends StatelessWidget {
   final bool isPassword;
   final FocusNode focusNode;
   final TextEditingController controller;
   final String text;
   final Icon icon;
 
-  const TextInputForm({
+  const TextInputFormWidget({
     Key? key,
     required this.focusNode,
     required this.text,

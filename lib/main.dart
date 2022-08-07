@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:hotel_traffic_controller/screens/fill_details_screen.dart';
 import './screens/authenticationScreen.dart';
 
 void main() async {
@@ -25,9 +26,11 @@ class MyApp extends StatelessWidget {
               theme: ThemeData(
                 primarySwatch: Colors.blue,
               ),
-              home: AuthenticationScreen(
-                isLogin: false,
-              ),
+              home:
+                   FillDetailsScreen(),
+              //     AuthenticationScreen(
+              //   isLogin: false,
+              // ),
               routes: {
                 // '/':(context) =>
               },

@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hotel_traffic_controller/model/user_model.dart';
+import 'package:hotel_traffic_controller/resources/cloud_firestore_class.dart.dart';
 
 final firebaseAuth = FirebaseAuth.instance;
 final firebaseStorage = FirebaseFirestore.instance;
 
 class FirebaseAuthentication {
+  CloudFireStoreClass cloudFireStoreClass = CloudFireStoreClass();
   Future<String> loginUser(String email, String password) async {
     email.trim();
     password.trim();
@@ -42,6 +45,11 @@ class FirebaseAuthentication {
       try {
         await firebaseAuth.createUserWithEmailAndPassword(
             email: email, password: password);
+
+        final userId = firebaseAuth.currentUser!.uid;
+        UserModel userModel =
+            UserModel(userName: username, emailAddress: email, uid: userId);
+        await cloudFireStoreClass.uploadUserData(userModel:userModel);
       } on FirebaseAuthException catch (e) {
         return e.message.toString();
       }
