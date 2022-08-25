@@ -1,8 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hotel_traffic_controller/resources/cloud_firestore_class.dart.dart';
+import 'package:hotel_traffic_controller/user_part/model/booking_details_model.dart';
+import 'package:hotel_traffic_controller/utils/utils.dart';
+import 'package:uuid/uuid.dart';
 import 'package:hotel_traffic_controller/widgets/choose_button_widget.dart';
 import 'package:hotel_traffic_controller/widgets/custom_button_widget.dart';
 import 'package:hotel_traffic_controller/widgets/textFormField_widget.dart';
+
+import 'package:provider/provider.dart';
 
 class FillDetailsScreen extends StatefulWidget {
   const FillDetailsScreen({Key? key}) : super(key: key);
@@ -12,6 +19,7 @@ class FillDetailsScreen extends StatefulWidget {
 }
 
 class _FillDetailsScreenState extends State<FillDetailsScreen> {
+
   final nameFocusNode = FocusNode();
   final emailFocusNode = FocusNode();
   final phoneNumberFocusNode = FocusNode();
@@ -21,6 +29,44 @@ class _FillDetailsScreenState extends State<FillDetailsScreen> {
   final phoneNumberController = TextEditingController();
 
   @override
+  void _submitData({
+    required String name,
+    required String phoneNumber,
+    required String email,
+    required int tableSize,
+    required DateTime date,
+    required Timestamp arrivalTime,
+  }) async {
+    if (name.isEmpty &&
+        phoneNumber.isEmpty &&
+        email.isEmpty &&
+        tableSize == null &&
+        date == null &&
+        arrivalTime == null) {
+      // Here will be some dialog box which show error
+    } else if (phoneNumber.length > 9 && phoneNumber.length < 0) {
+      //Condition
+    } else if (date.isBefore(DateTime.now())) {
+      // Enter valid date
+    }
+    // final userId = await Provider.of<UserUid>(context,listen: false).getUserId();
+    final orderStorderId = Uuid().v1();
+    print(orderStorderId);
+    print('Order is not printed yet');
+    BookingDetailsModel bookingDetailsModel = BookingDetailsModel(
+        uid: 'userId',
+        orderStoredId: orderStorderId,
+        name: name,
+        email: email,
+        phoneNumber: phoneNumber,
+        tableSize: tableSize,
+        date: date,
+        arrivalTime: arrivalTime);
+
+    await CloudFireStoreClass()
+        .uploadBookingDetails(bookingDetailsModel: bookingDetailsModel);
+    print('/.......................... Process Finished....................');
+  }
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -95,13 +141,31 @@ class _FillDetailsScreenState extends State<FillDetailsScreen> {
                           ChooseButtonWidget(
                               title: 'Choose Date',
                               function: () {},
-                              icon: Icon(Icons.edit_calendar)),
-    
-    
+                              icon: const Icon(Icons.edit_calendar)),
                         ],
                       ),
-                          SizedBox(height: 40.h,),
-                          CustomButtonWidget(backgroundColor: Color(0xffF33440), function: (){}, title: 'Submit', fntSize: 24.sp, color: Colors.white)    
+                      SizedBox(
+                        height: 30.h,
+                      ),
+                      ChooseButtonWidget(
+                          title: 'Time',
+                          function: () {},
+                          icon: const Icon(Icons.lock_clock)),
+                      SizedBox(
+                        height: 40.h,
+                      ),
+                      CustomButtonWidget(
+                          backgroundColor: Color(0xffF33440),
+                          function: () => _submitData(
+                              name: nameController.text,
+                              phoneNumber: phoneNumberController.text,
+                              email: emailController.text,
+                              tableSize: 15,
+                              date: DateTime(2014, 9, 7, 17, 30),
+                              arrivalTime: Timestamp(10, 1212)),
+                          title: 'Submit',
+                          fntSize: 24.sp,
+                          color: Colors.white)
                     ],
                   ),
                 )

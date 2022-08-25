@@ -1,10 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hotel_traffic_controller/resources/auth_function_class.dart';
+
 import 'package:hotel_traffic_controller/utils/utils.dart';
 import 'package:hotel_traffic_controller/widgets/custom_button_widget.dart';
 import 'package:hotel_traffic_controller/widgets/textFormField_widget.dart';
-import 'package:hotel_traffic_controller/resources/auth_function_class.dart';
+
 
 class AuthenticationScreen extends StatefulWidget {
   bool isLogin;

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hotel_traffic_controller/model/user_model.dart';
 import 'package:hotel_traffic_controller/resources/cloud_firestore_class.dart.dart';
+import 'package:hotel_traffic_controller/user_part/model/user_model.dart';
 
 final firebaseAuth = FirebaseAuth.instance;
 final firebaseStorage = FirebaseFirestore.instance;
