@@ -49,12 +49,12 @@ class _FillDetailsScreenState extends State<FillDetailsScreen> {
     } else if (date.isBefore(DateTime.now())) {
       // Enter valid date
     }
-    // final userId = await Provider.of<UserUid>(context,listen: false).getUserId();
+    final userId = await Provider.of<UserUid>(context,listen: false).getUserId();
     final orderStorderId = Uuid().v1();
     print(orderStorderId);
     print('Order is not printed yet');
     BookingDetailsModel bookingDetailsModel = BookingDetailsModel(
-        uid: 'userId',
+        uid: userId,
         orderStoredId: orderStorderId,
         name: name,
         email: email,

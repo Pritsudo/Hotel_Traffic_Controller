@@ -9,10 +9,10 @@ class Utils {
   }
 }
 
-// class UserUid with ChangeNotifier {
-//   Future<String> getUserId() async {
-//     String uid = FirebaseAuth.instance.currentUser!.uid;
-//     notifyListeners();
-//     return uid;
-//   }
-// }
+class UserUid with ChangeNotifier {
+  Future<String> getUserId() async {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    notifyListeners();
+    return uid;
+  }
+}

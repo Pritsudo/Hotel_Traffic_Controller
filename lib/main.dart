@@ -24,40 +24,38 @@ class MyApp extends StatelessWidget {
         builder: (context, child) {
           return ScreenUtilInit(
             builder: (context, child) {
-              return
-                  // MultiProvider(
-                  // providers: [
-                  //   ChangeNotifierProvider(
-                  //     create: (_) => UserUid(),
-                  //   )
-                  // ],
-                  // child:
-                  MaterialApp(
-                title: 'Flutter Demo',
-                theme: ThemeData(
-                  primarySwatch: Colors.blue,
-                ),
-                home: StreamBuilder(
-                  builder: (context, AsyncSnapshot<User?> user) {
-                    if (user.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.orange,
-                        ),
+              return MultiProvider(
+                providers: [
+                  ChangeNotifierProvider(
+                    create: (_) => UserUid(),
+                  )
+                ],
+                child: MaterialApp(
+                  title: 'Flutter Demo',
+                  theme: ThemeData(
+                    primarySwatch: Colors.blue,
+                  ),
+                  home: StreamBuilder(
+                    builder: (context, AsyncSnapshot<User?> user) {
+                      if (user.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.orange,
+                          ),
+                        );
+                      } else if (user.hasData) {
+                        return FillDetailsScreen();
+                      }
+                      return AuthenticationScreen(
+                        isLogin: false,
                       );
-                    } else if (user.hasData) {
-                      return FillDetailsScreen();
-                    }
-                    return AuthenticationScreen(
-                      isLogin: false,
-                    );
+                    },
+                    stream: FirebaseAuth.instance.authStateChanges(),
+                  ),
+                  routes: {
+                    // '/':(context) =>
                   },
-                  stream: FirebaseAuth.instance.authStateChanges(),
                 ),
-                routes: {
-                  // '/':(context) =>
-                },
-                // ),
               );
             },
           );
