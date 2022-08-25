@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hotel_traffic_controller/screens/fill_details_screen.dart';
+import 'package:hotel_traffic_controller/screens/hotel_lists_screen.dart';
 import './screens/authenticationScreen.dart';
 
 void main() async {
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
                 primarySwatch: Colors.blue,
               ),
               home:
+              // HotelListScreen(),
                    FillDetailsScreen(),
               //     AuthenticationScreen(
               //   isLogin: false,
