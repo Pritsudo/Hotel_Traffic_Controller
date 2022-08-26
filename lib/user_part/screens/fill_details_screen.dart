@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hotel_traffic_controller/manager_part/screens/home_screen.dart';
 import 'package:hotel_traffic_controller/resources/cloud_firestore_class.dart.dart';
 import 'package:hotel_traffic_controller/user_part/model/booking_details_model.dart';
 import 'package:hotel_traffic_controller/utils/utils.dart';
@@ -19,7 +20,6 @@ class FillDetailsScreen extends StatefulWidget {
 }
 
 class _FillDetailsScreenState extends State<FillDetailsScreen> {
-
   final nameFocusNode = FocusNode();
   final emailFocusNode = FocusNode();
   final phoneNumberFocusNode = FocusNode();
@@ -28,7 +28,6 @@ class _FillDetailsScreenState extends State<FillDetailsScreen> {
   final emailController = TextEditingController();
   final phoneNumberController = TextEditingController();
 
-  @override
   void _submitData({
     required String name,
     required String phoneNumber,
@@ -44,13 +43,18 @@ class _FillDetailsScreenState extends State<FillDetailsScreen> {
         date == null &&
         arrivalTime == null) {
       // Here will be some dialog box which show error
-    } else if (phoneNumber.length > 9 && phoneNumber.length < 0) {
+     
+    } else if (phoneNumber.length != 9 && phoneNumber.length < 0) {
+      
       //Condition
     } else if (date.isBefore(DateTime.now())) {
+     
       // Enter valid date
     }
-    final userId = await Provider.of<UserUid>(context,listen: false).getUserId();
-    final orderStorderId = Uuid().v1();
+    final userId =
+        await Provider.of<UserUid>(context, listen: false).getUserId();
+    final orderStorderId = const Uuid().v1();
+
     print(orderStorderId);
     print('Order is not printed yet');
     BookingDetailsModel bookingDetailsModel = BookingDetailsModel(
@@ -66,7 +70,10 @@ class _FillDetailsScreenState extends State<FillDetailsScreen> {
     await CloudFireStoreClass()
         .uploadBookingDetails(bookingDetailsModel: bookingDetailsModel);
     print('/.......................... Process Finished....................');
+    Navigator.push(context, MaterialPageRoute(builder:(context) => HomeScreen(), ));
   }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
