@@ -2,9 +2,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:hotel_traffic_controller/manager_part/screens/home_screen.dart';
+import 'package:hotel_traffic_controller/manager_part/screens/mailer_screen.dart';
+import 'package:hotel_traffic_controller/user_part/model/booking_details_model.dart';
 import 'package:hotel_traffic_controller/user_part/screens/authenticationScreen.dart';
 import 'package:hotel_traffic_controller/user_part/screens/fill_details_screen.dart';
+import 'package:hotel_traffic_controller/user_part/screens/hotel_lists_screen.dart';
+import 'package:hotel_traffic_controller/user_part/screens/user_waiting_scree.dart';
 import 'package:hotel_traffic_controller/utils/utils.dart';
+import 'package:hotel_traffic_controller/widgets/hotel_list_card_widget.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -28,7 +34,8 @@ class MyApp extends StatelessWidget {
                 providers: [
                   ChangeNotifierProvider(
                     create: (_) => UserUid(),
-                  )
+                  ),
+                 
                 ],
                 child: MaterialApp(
                   title: 'Flutter Demo',
@@ -44,7 +51,7 @@ class MyApp extends StatelessWidget {
                           ),
                         );
                       } else if (user.hasData) {
-                        return FillDetailsScreen();
+                        return  HotelListScreen();
                       }
                       return AuthenticationScreen(
                         isLogin: false,
@@ -54,6 +61,11 @@ class MyApp extends StatelessWidget {
                   ),
                   routes: {
                     // '/':(context) =>
+                    AuthenticationScreen.routName :(context) => AuthenticationScreen(isLogin: false),
+                    HotelListScreen.routName :(context)=>const HotelListScreen(),
+                    FillDetailsScreen.routeName :(context)=>const FillDetailsScreen(),
+                    HomeScreen.routeName :(context)=> HomeScreen(),
+                    UserWaitingScreen.routeName:(context) => UserWaitingScreen(),
                   },
                 ),
               );

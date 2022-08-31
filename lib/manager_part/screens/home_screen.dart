@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hotel_traffic_controller/resources/cloud_firestore_class.dart.dart';
+import 'package:hotel_traffic_controller/user_part/model/booking_details_model.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
+  static const routeName = '/home-screen';
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -10,7 +13,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final firebaseStorage = FirebaseFirestore.instance;
-
+  final cloudFirstoreRef =CloudFireStoreClass();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,18 +22,34 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context,
             AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
+        
           return ListView.builder(
             itemBuilder: (context, index) {
+              final snap = snapshot.data!.docs;
+              final dbData = snap[index].data();
               return Card(
-                margin: EdgeInsets.all(8.0),
-                elevation: 1.2,
                 child: Column(
-                  children: [Text('name : ${snapshot.data!.docs[index].data()}'),
-                  Divider(color: Colors.red),
+                  children: [
+                    Text("Status : ${dbData['bookingStatus']}"),
+                    Text("email : ${dbData['emailAddress']}"),
+                    Text("orderStoredId : ${dbData['orderStoredId']}"),
+                    Text("PhoneNumber : ${dbData['phoneNumber']}"),
+                    TextButton(
+                        onPressed: () async => await cloudFirstoreRef.changeOrderStatus(
+                              true,
+                              snap[index],
+                            ),
+                        child: const Text('Accept')),
+                    TextButton(
+                        onPressed: () async => await cloudFirstoreRef.changeOrderStatus(
+                              false,
+                              snap[index],
+                            ),
+                        child: const Text('Decline')),
                   ],
                 ),
               );
@@ -38,7 +57,11 @@ class _HomeScreenState extends State<HomeScreen> {
             itemCount: snapshot.data!.docs.length,
           );
         },
-        stream: firebaseStorage.collection('orders').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('Hotels Names')
+            .doc('testName1')
+            .collection('orders')
+            .snapshots(),
       ),
     );
   }

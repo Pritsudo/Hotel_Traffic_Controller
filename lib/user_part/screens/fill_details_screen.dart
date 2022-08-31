@@ -4,6 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hotel_traffic_controller/manager_part/screens/home_screen.dart';
 import 'package:hotel_traffic_controller/resources/cloud_firestore_class.dart.dart';
 import 'package:hotel_traffic_controller/user_part/model/booking_details_model.dart';
+import 'package:hotel_traffic_controller/user_part/model/hotel_list_model.dart';
+import 'package:hotel_traffic_controller/user_part/screens/hotel_lists_screen.dart';
+import 'package:hotel_traffic_controller/user_part/screens/user_waiting_scree.dart';
 import 'package:hotel_traffic_controller/utils/utils.dart';
 import 'package:uuid/uuid.dart';
 import 'package:hotel_traffic_controller/widgets/choose_button_widget.dart';
@@ -13,7 +16,9 @@ import 'package:hotel_traffic_controller/widgets/textFormField_widget.dart';
 import 'package:provider/provider.dart';
 
 class FillDetailsScreen extends StatefulWidget {
+  // final HotelListModel hotelListModel;
   const FillDetailsScreen({Key? key}) : super(key: key);
+  static const routeName = '/fillDetail-Screen';
 
   @override
   State<FillDetailsScreen> createState() => _FillDetailsScreenState();
@@ -28,27 +33,29 @@ class _FillDetailsScreenState extends State<FillDetailsScreen> {
   final emailController = TextEditingController();
   final phoneNumberController = TextEditingController();
 
-  void _submitData({
-    required String name,
-    required String phoneNumber,
-    required String email,
-    required int tableSize,
-    required DateTime date,
-    required Timestamp arrivalTime,
-  }) async {
+  void _submitData(
+      {required String name,
+      required String phoneNumber,
+      required String email,
+      required int tableSize,
+      required DateTime date,
+      required Timestamp arrivalTime,
+      required String hotelName}) async {
+    
+    // await BookingDetails().fetchOrders(hotelName : 'testName1');
+
     if (name.isEmpty &&
         phoneNumber.isEmpty &&
         email.isEmpty &&
         tableSize == null &&
         date == null &&
-        arrivalTime == null) {
+        arrivalTime == null &&
+        hotelName == null) {
       // Here will be some dialog box which show error
-     
+
     } else if (phoneNumber.length != 9 && phoneNumber.length < 0) {
-      
       //Condition
     } else if (date.isBefore(DateTime.now())) {
-     
       // Enter valid date
     }
     final userId =
@@ -58,23 +65,27 @@ class _FillDetailsScreenState extends State<FillDetailsScreen> {
     print(orderStorderId);
     print('Order is not printed yet');
     BookingDetailsModel bookingDetailsModel = BookingDetailsModel(
+
         uid: userId,
         orderStoredId: orderStorderId,
         name: name,
+        hotelName: hotelName,
         email: email,
         phoneNumber: phoneNumber,
         tableSize: tableSize,
-        date: date,
-        arrivalTime: arrivalTime);
+        date: arrivalTime,
+        arrivalTime: arrivalTime,
+        bookingStatus: 'Pending');
 
-    await CloudFireStoreClass()
-        .uploadBookingDetails(bookingDetailsModel: bookingDetailsModel);
+    await CloudFireStoreClass().uploadBookingDetails(
+        bookingDetailsModel: bookingDetailsModel, hotelName: hotelName);
     print('/.......................... Process Finished....................');
-    Navigator.push(context, MaterialPageRoute(builder:(context) => HomeScreen(), ));
+    Navigator.pushNamed(context, HomeScreen.routeName,arguments: bookingDetailsModel);
   }
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as HotelListModel;
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
@@ -164,6 +175,7 @@ class _FillDetailsScreenState extends State<FillDetailsScreen> {
                       CustomButtonWidget(
                           backgroundColor: Color(0xffF33440),
                           function: () => _submitData(
+                              hotelName: args.hotelName,
                               name: nameController.text,
                               phoneNumber: phoneNumberController.text,
                               email: emailController.text,

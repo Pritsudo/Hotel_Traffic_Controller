@@ -2,13 +2,14 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hotel_traffic_controller/resources/auth_function_class.dart';
+import 'package:hotel_traffic_controller/user_part/screens/hotel_lists_screen.dart';
 
 import 'package:hotel_traffic_controller/utils/utils.dart';
 import 'package:hotel_traffic_controller/widgets/custom_button_widget.dart';
 import 'package:hotel_traffic_controller/widgets/textFormField_widget.dart';
 
-
 class AuthenticationScreen extends StatefulWidget {
+  static const routName = 'authentication-screen';
   bool isLogin;
   final TextEditingController userNameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -56,6 +57,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       }
       if (authStatus == "success") {
         print('SuccessFully executed');
+        Navigator.pushNamed(context, HotelListScreen.routName);
       }
     } else {
       setState(() {

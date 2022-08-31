@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hotel_traffic_controller/user_part/model/hotel_list_model.dart';
 
 class HotelListCardWidget extends StatelessWidget {
+  final HotelListModel hotelListModel;
+
   const HotelListCardWidget({
-    Key? key,
+    required this.hotelListModel,
+    required Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -17,9 +21,7 @@ class HotelListCardWidget extends StatelessWidget {
             flex: 2,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10.r),
-              child: Image(
-                  image: NetworkImage(
-                      'https://images.unsplash.com/photo-1625244724120-1fd1d34d00f6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80')),
+              child: Image(image: NetworkImage(hotelListModel.url)),
             ),
           ),
           SizedBox(
@@ -32,7 +34,7 @@ class HotelListCardWidget extends StatelessWidget {
               // mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  'Test Name',
+                  hotelListModel.hotelName,
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 16.sp,
@@ -43,7 +45,7 @@ class HotelListCardWidget extends StatelessWidget {
                   height: 5.h,
                 ),
                 Text(
-                  'this is Address nalndaldha ajdlajhd adhjshd',
+                  hotelListModel.address,
                   maxLines: 2,
                 ),
                 Row(
@@ -57,13 +59,19 @@ class HotelListCardWidget extends StatelessWidget {
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
-                              return Icon(Icons.star,color: Colors.grey[500],);
+                              bool ratingNumber = index < hotelListModel.rating;
+                              return Icon(
+                                Icons.star,
+                                color: ratingNumber
+                                    ? Colors.pink
+                                    : Colors.grey[500],
+                              );
                             },
                             itemCount: 5,
                           ),
                         ),
                         Text(
-                          '3.0',
+                          hotelListModel.rating.toString(),
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 16.sp,
@@ -73,14 +81,14 @@ class HotelListCardWidget extends StatelessWidget {
                       ],
                     ),
                     Padding(
-                      padding:EdgeInsets.only(right:4.w),
-                      child: Text('Full',style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1)),
+                      padding: EdgeInsets.only(right: 4.w),
+                      child: Text('Full',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1)),
                     ),
-                            
                   ],
                 )
               ],
