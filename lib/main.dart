@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
                           ),
                         );
                       } else if (user.hasData) {
-                        return  HotelListScreen();
+                        return  HomeScreen();
                       }
                       return AuthenticationScreen(
                         isLogin: false,

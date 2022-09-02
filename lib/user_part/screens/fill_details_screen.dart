@@ -80,7 +80,7 @@ class _FillDetailsScreenState extends State<FillDetailsScreen> {
     await CloudFireStoreClass().uploadBookingDetails(
         bookingDetailsModel: bookingDetailsModel, hotelName: hotelName);
     print('/.......................... Process Finished....................');
-    Navigator.pushNamed(context, HomeScreen.routeName,arguments: bookingDetailsModel);
+    Navigator.pushNamed(context, UserWaitingScreen.routeName,arguments: bookingDetailsModel);
   }
 
   @override
