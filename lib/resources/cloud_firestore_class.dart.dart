@@ -21,7 +21,7 @@ class CloudFireStoreClass {
     final orderId = snapshot['orderStoredId'];
 
     final cloudManagerPath =
-      firebaseStorage.collection('Hotels Names').doc('testName1');
+      firebaseStorage.collection('Hotels Names').doc('Hotel Rajpalace');
     final cloudUserPath = firebaseStorage.collection('users').doc(userId);
 
     // var snapshot = snap.data() as Map<String, dynamic>;

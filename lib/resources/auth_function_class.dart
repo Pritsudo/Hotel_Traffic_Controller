@@ -14,9 +14,11 @@ class FirebaseAuthentication {
 
     if (email.isEmpty || password.isEmpty) {
       return "Please fill all the fields";
-    } else if (!email.contains('@')) {
-      return "Email address is not valid";
-    } else if (password.length < 8) {
+    } 
+    // else if (!email.contains('@gmail.com')) {
+    //   return "Enter valid email address";
+    // }
+     else if (password.length < 8) {
       return "Password length must be greater than 8 character";
     } else if (email.isNotEmpty && password.isNotEmpty) {
       try {
@@ -37,8 +39,8 @@ class FirebaseAuthentication {
 
     if (email.isEmpty || password.isEmpty || username.isEmpty) {
       return "Please fill all the fields";
-    } else if (!email.contains('@')) {
-      return "Email is not valid";
+    } else if (!email.contains('@gmail.com')) {
+      return "Enter valid email address";
     } else if (password.length < 8) {
       return "Password length must be greater than 8 character";
     } else if (email.isNotEmpty && password.isNotEmpty && username.isNotEmpty) {
@@ -49,7 +51,7 @@ class FirebaseAuthentication {
         final userId = firebaseAuth.currentUser!.uid;
         UserModel userModel =
             UserModel(userName: username, emailAddress: email, uid: userId);
-        await cloudFireStoreClass.uploadUserData(userModel:userModel);
+        await cloudFireStoreClass.uploadUserData(userModel: userModel);
       } on FirebaseAuthException catch (e) {
         return e.message.toString();
       }

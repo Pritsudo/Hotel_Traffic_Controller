@@ -74,7 +74,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
         Utils().showSnackBar(context: context, content: authStatus);
       }
       if (authStatus == "success") {
-        print('SuccessFully executed');
+        Navigator.pushNamed(context, HotelListScreen.routName);
       }
     }
   }
@@ -83,8 +83,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   int n = 1;
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    int run = n++;
-    print(run);
+
     print('width : ${screenSize.width}');
     print('height : ${screenSize.height}');
     return GestureDetector(

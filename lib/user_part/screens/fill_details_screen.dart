@@ -5,7 +5,7 @@ import 'package:hotel_traffic_controller/manager_part/screens/home_screen.dart';
 import 'package:hotel_traffic_controller/resources/cloud_firestore_class.dart.dart';
 import 'package:hotel_traffic_controller/user_part/model/booking_details_model.dart';
 import 'package:hotel_traffic_controller/user_part/model/hotel_list_model.dart';
-import 'package:hotel_traffic_controller/user_part/screens/hotel_lists_screen.dart';
+import 'package:hotel_traffic_controller/user_part/screens/app_drawer.dart';
 import 'package:hotel_traffic_controller/user_part/screens/user_waiting_scree.dart';
 import 'package:hotel_traffic_controller/utils/utils.dart';
 import 'package:uuid/uuid.dart';
@@ -80,7 +80,8 @@ class _FillDetailsScreenState extends State<FillDetailsScreen> {
     await CloudFireStoreClass().uploadBookingDetails(
         bookingDetailsModel: bookingDetailsModel, hotelName: hotelName);
     print('/.......................... Process Finished....................');
-    Navigator.pushNamed(context, UserWaitingScreen.routeName,arguments: bookingDetailsModel);
+  //  Navigator.pushNamed(context, UserWaitingScreen.routeName,arguments: bookingDetailsModel);
+    Navigator.pushNamed(context, HomeScreen.routeName);
   }
 
   @override
@@ -89,6 +90,7 @@ class _FillDetailsScreenState extends State<FillDetailsScreen> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
+        
         appBar: AppBar(backgroundColor: Color(0xffF33440)),
         body: SingleChildScrollView(
           child: SizedBox(

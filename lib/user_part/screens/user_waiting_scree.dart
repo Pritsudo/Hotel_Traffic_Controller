@@ -18,10 +18,7 @@ class _UserWaitingScreenState extends State<UserWaitingScreen> {
   Widget build(BuildContext context) {
     final bookingDetailsModel =
         ModalRoute.of(context)!.settings.arguments as BookingDetailsModel;
-    // String userId =
-    //     Provider.of<UserUid>(context, listen: false).getUserId().toString();
 
-    // final firestore = FirebaseFirestore.instance;
     return Scaffold(
       appBar: AppBar(),
       body: StreamBuilder(
