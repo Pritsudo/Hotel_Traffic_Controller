@@ -20,7 +20,7 @@ class _UserWaitingScreenState extends State<UserWaitingScreen> {
         ModalRoute.of(context)!.settings.arguments as BookingDetailsModel;
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(backgroundColor: Color(0xff3D7ABE),),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('users')
@@ -34,26 +34,10 @@ class _UserWaitingScreenState extends State<UserWaitingScreen> {
           }
           var userDocument = snapshot.data['bookingStatus'];
           if (userDocument == 'Pending') {
-            return Text('Wait until Accept or Decline your Request');
+            return Center(child: Text('Wait until Accept or Decline your Request',style: TextStyle(fontSize:40,letterSpacing: 2)));
           }
-          return Text(userDocument);
-          // return ListView.builder(
-          //   itemBuilder: (context, index) {
-          //     final snap = snapshot.data;
-          //     final dbData = snap[index].data();
-          //     return Card(
-          //       child: Column(
-          //         children: [
-          //           Text("Status : ${dbData['bookingStatus']}"),
-          //           Text("email : ${dbData['emailAddress']}"),
-          //           Text("orderStoredId : ${dbData['orderStoredId']}"),
-          //           Text("PhoneNumber : ${dbData['phoneNumber']}"),
-          //         ],
-          //       ),
-          //     );
-          //   },
-          //   itemCount: (snapshot.data as Map<String, dynamic>).length,
-          // );
+          return Center(child: Text(userDocument,style: TextStyle(fontSize:40,)));
+          
         },
       ),
     );

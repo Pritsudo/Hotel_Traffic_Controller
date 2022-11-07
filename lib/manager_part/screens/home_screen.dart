@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: StreamBuilder(
         builder: (context,
             AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-          print('We enetred into sec');
+          
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         phoneNumber: dbData['phoneNumber'],
                         tableSize: dbData['tableSize'],
                         date: dbData['date'],
-                        time: dbData['date']),
+                        time: dbData['arrivalTime']),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [

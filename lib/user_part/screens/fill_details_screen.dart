@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hotel_traffic_controller/manager_part/screens/home_screen.dart';
@@ -8,6 +9,7 @@ import 'package:hotel_traffic_controller/user_part/model/hotel_list_model.dart';
 import 'package:hotel_traffic_controller/user_part/screens/app_drawer.dart';
 import 'package:hotel_traffic_controller/user_part/screens/user_waiting_scree.dart';
 import 'package:hotel_traffic_controller/utils/utils.dart';
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 import 'package:hotel_traffic_controller/widgets/choose_button_widget.dart';
 import 'package:hotel_traffic_controller/widgets/custom_button_widget.dart';
@@ -16,9 +18,10 @@ import 'package:hotel_traffic_controller/widgets/textFormField_widget.dart';
 import 'package:provider/provider.dart';
 
 class FillDetailsScreen extends StatefulWidget {
-  // final HotelListModel hotelListModel;
-  const FillDetailsScreen({Key? key}) : super(key: key);
-  static const routeName = '/fillDetail-Screen';
+  var table_no;
+  var hotelName;
+  FillDetailsScreen({Key? key, required this.table_no, required this.hotelName})
+      : super(key: key);
 
   @override
   State<FillDetailsScreen> createState() => _FillDetailsScreenState();
@@ -32,16 +35,17 @@ class _FillDetailsScreenState extends State<FillDetailsScreen> {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final phoneNumberController = TextEditingController();
-
+  final _dt = TextEditingController();
+  late List l;
+  String dateString = DateFormat('yyyy-MMMM-dd h:mm:a').format(DateTime.now());
   void _submitData(
       {required String name,
       required String phoneNumber,
       required String email,
       required int tableSize,
-      required DateTime date,
-      required Timestamp arrivalTime,
+      required String date,
+      required String arrivalTime,
       required String hotelName}) async {
-    
     // await BookingDetails().fetchOrders(hotelName : 'testName1');
 
     if (name.isEmpty &&
@@ -55,9 +59,7 @@ class _FillDetailsScreenState extends State<FillDetailsScreen> {
 
     } else if (phoneNumber.length != 9 && phoneNumber.length < 0) {
       //Condition
-    } else if (date.isBefore(DateTime.now())) {
-      // Enter valid date
-    }
+    } 
     final userId =
         await Provider.of<UserUid>(context, listen: false).getUserId();
     final orderStorderId = const Uuid().v1();
@@ -65,33 +67,37 @@ class _FillDetailsScreenState extends State<FillDetailsScreen> {
     print(orderStorderId);
     print('Order is not printed yet');
     BookingDetailsModel bookingDetailsModel = BookingDetailsModel(
-
         uid: userId,
         orderStoredId: orderStorderId,
         name: name,
         hotelName: hotelName,
         email: email,
         phoneNumber: phoneNumber,
-        tableSize: tableSize,
-        date: arrivalTime,
-        arrivalTime: arrivalTime,
+        tableSize: int.parse(widget.table_no),
+        date: l[0],
+        arrivalTime: l[1],
         bookingStatus: 'Pending');
 
     await CloudFireStoreClass().uploadBookingDetails(
         bookingDetailsModel: bookingDetailsModel, hotelName: hotelName);
     print('/.......................... Process Finished....................');
-  //  Navigator.pushNamed(context, UserWaitingScreen.routeName,arguments: bookingDetailsModel);
-    Navigator.pushNamed(context, HomeScreen.routeName);
+      Navigator.pushNamed(context, UserWaitingScreen.routeName,arguments: bookingDetailsModel);
+    //Navigator.pushNamed(context, UserWaitingScreen.routeName);
   }
 
   @override
+  @override
+  void initState() {
+    _dt.text = dateString;
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as HotelListModel;
+    //final args = ModalRoute.of(context)!.settings.arguments as HotelListModel;
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-        
-        appBar: AppBar(backgroundColor: Color(0xffF33440)),
+        appBar: AppBar(backgroundColor: Color(0xff3D7ABE)),
         body: SingleChildScrollView(
           child: SizedBox(
             height: 550.h,
@@ -106,9 +112,8 @@ class _FillDetailsScreenState extends State<FillDetailsScreen> {
                       style: TextStyle(fontSize: 24.sp),
                     )),
                 SizedBox(
-                  height: 500.h,
-                  child: Column(
-                    children: [
+                    height: 500.h,
+                    child: Column(children: [
                       TextInputFormWidget(
                           focusNode: nameFocusNode,
                           text: 'Name',
@@ -148,48 +153,80 @@ class _FillDetailsScreenState extends State<FillDetailsScreen> {
                       SizedBox(
                         height: 30.h,
                       ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 35.0, right: 35.0),
+                        child: DateTimePicker(
+                          type: DateTimePickerType.dateTimeSeparate,
+                          dateMask: 'd MMMM, yyyy',
+                          timePickerEntryModeInput: false,
+
+                          controller: _dt,
+                          //initialValue: DateTime.now().toString(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2100),
+                          icon: Icon(Icons.event),
+                          dateLabelText: 'Date',
+                          timeLabelText: "Hour",
+
+                          onChanged: (val) {
+                            //print(DateFormat('yyyy-MMMM-dd h:mm:a').format(DateTime.parse(val)));
+                            val = DateFormat('yyyy-MMMM-dd h:mm:a')
+                                .format(DateTime.parse(val))
+                                .toString();
+                            //l=val.split(' ');
+                            _dt.text = val;
+
+                            //return null;
+                          },
+
+                          // onChanged: (val) => print(val),
+                          validator: (val) {
+                            // _dt.text=_dt.text.split(' ').toString();
+                            // print(_dt.text);
+
+                            return null;
+                          },
+                          //onSaved: (val) => print(''),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          ChooseButtonWidget(
-                              title: 'Select Table',
-                              function: () {},
-                              icon: Icon(Icons.table_bar)),
+                          // ChooseButtonWidget(
+                          //     title: 'Select Table',
+                          //     function: () {},
+                          //     icon: Icon(Icons.table_bar)),
                           SizedBox(
                             width: 5.w,
                           ),
-                          ChooseButtonWidget(
-                              title: 'Choose Date',
-                              function: () {},
-                              icon: const Icon(Icons.edit_calendar)),
+
+                          SizedBox(
+                            height: 40.h,
+                          ),
+                          CustomButtonWidget(
+                              backgroundColor: Color(0xff3D7ABE),
+                              function: () {
+                                l = _dt.text.split(' ').toList();
+                                print(l[0]);
+                                print(l[1]);
+                                _submitData(
+                                    hotelName: widget.hotelName,
+                                    name: nameController.text,
+                                    phoneNumber: phoneNumberController.text,
+                                    email: emailController.text,
+                                    tableSize: 15,
+                                    date: l[0],
+                                    arrivalTime: l[1]);
+                              },
+                              title: 'Submit',
+                              fntSize: 24.sp,
+                              color: Colors.white)
                         ],
                       ),
-                      SizedBox(
-                        height: 30.h,
-                      ),
-                      ChooseButtonWidget(
-                          title: 'Time',
-                          function: () {},
-                          icon: const Icon(Icons.lock_clock)),
-                      SizedBox(
-                        height: 40.h,
-                      ),
-                      CustomButtonWidget(
-                          backgroundColor: Color(0xffF33440),
-                          function: () => _submitData(
-                              hotelName: args.hotelName,
-                              name: nameController.text,
-                              phoneNumber: phoneNumberController.text,
-                              email: emailController.text,
-                              tableSize: 15,
-                              date: DateTime(2014, 9, 7, 17, 30),
-                              arrivalTime: Timestamp(10, 1212)),
-                          title: 'Submit',
-                          fntSize: 24.sp,
-                          color: Colors.white)
-                    ],
-                  ),
-                )
+                    ]))
               ],
             ),
           ),

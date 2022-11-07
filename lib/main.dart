@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
                           ),
                         );
                       } else if (user.hasData) {
-                        return HomeScreen();
+                        return HotelListScreen();
                       }
                       return AuthenticationScreen(
                         isLogin: false,
@@ -67,8 +67,7 @@ class MyApp extends StatelessWidget {
                         AuthenticationScreen(isLogin: false),
                     HotelListScreen.routName: (context) =>
                         const HotelListScreen(),
-                    FillDetailsScreen.routeName: (context) =>
-                        const FillDetailsScreen(),
+  
                     HomeScreen.routeName: (context) => HomeScreen(),
                     UserWaitingScreen.routeName: (context) =>
                         UserWaitingScreen(),

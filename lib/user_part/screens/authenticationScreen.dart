@@ -162,7 +162,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                         color: Colors.black,
                         size: 28.h,
                       ),
-                      isPassword: false,
+                      isPassword: true,
                       controller: widget.passwordController),
                   SizedBox(height: 20.h),
                   if (widget.isLogin)

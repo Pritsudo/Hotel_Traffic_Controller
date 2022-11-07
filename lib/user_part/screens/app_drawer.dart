@@ -11,15 +11,33 @@ class AppDrawer extends StatefulWidget {
 }
 
 class _AppDrawerState extends State<AppDrawer> {
-  User user = FirebaseAuth.instance.currentUser!;
+  User user = FirebaseAuth.instance.currentUser!; 
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
+          
+            
           UserAccountsDrawerHeader(
-              accountEmail: Text(user.email!), accountName: Text('ghghg')),
+            decoration: BoxDecoration(
+              color: Color(0xff3D7ABE)
+            ),
+            currentAccountPicture: FittedBox(
+            fit: BoxFit.cover,
+             child:   CircleAvatar(   
+            backgroundImage:NetworkImage('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'),
+          
+           /* child: (_image != null)
+                ? Image.file(_image!)
+                : Image.asset('assets/images/images.jpg'),*/
+          ),
+      
+            ),
+              accountEmail: Text(user.email!), accountName: Text('Prit Dalsaniya')),
           ListTile(
             //Icons.room_outlined,
             leading: const Icon(Icons.apartment),

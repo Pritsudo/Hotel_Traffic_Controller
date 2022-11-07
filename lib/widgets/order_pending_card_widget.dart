@@ -6,8 +6,8 @@ class OrderPendingCard extends StatelessWidget {
   String hotelName;
   String phoneNumber;
   int tableSize;
-  Timestamp date;
-  Timestamp time;
+  String date;
+  String time;
 
    OrderPendingCard({
     Key? key,
@@ -23,7 +23,7 @@ class OrderPendingCard extends StatelessWidget {
     
     return Container(
       width: double.infinity,
-      height: 195.h,
+      height: 148.h,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(

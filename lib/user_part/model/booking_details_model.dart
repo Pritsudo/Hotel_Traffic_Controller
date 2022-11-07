@@ -10,8 +10,8 @@ class BookingDetailsModel {
   final String email;
   final String phoneNumber;
   final int tableSize;
-  final Timestamp date;
-  final Timestamp arrivalTime;
+  final String date;
+  final String arrivalTime;
   String bookingStatus;
 
   BookingDetailsModel(
